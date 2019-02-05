@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="howgtd">
+  <meta name="keywords" content="python,scrapy,">
 
 
 
@@ -79,17 +79,20 @@
 
 
 
-<meta name="description" content="怎么更高效的把事情做好">
-<meta name="keywords" content="gtd">
-<meta property="og:type" content="website">
-<meta property="og:title" content="HowGTD">
-<meta property="og:url" content="http://howgtd.com/index.html">
+<meta name="description" content="##关于scrapy 一个很成熟的爬虫框架，了解到的时候感觉很不错，学习数据抓取可以直接从这里开始学习；  结构非常清晰，模块的实现的功能也比较明朗：  scrapy engine 作为调度引擎起到协同4个模块，每个模块之间的交互都经过scrapy engine； scheduler 是调度器的意思，负责处理需要爬取页面的队列调度； downloader 负责从scheduler获取到需要爬取页面">
+<meta name="keywords" content="python,scrapy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python_spider">
+<meta property="og:url" content="http://howgtd.com/2019/02/01/python-spider/index.html">
 <meta property="og:site_name" content="HowGTD">
-<meta property="og:description" content="怎么更高效的把事情做好">
+<meta property="og:description" content="##关于scrapy 一个很成熟的爬虫框架，了解到的时候感觉很不错，学习数据抓取可以直接从这里开始学习；  结构非常清晰，模块的实现的功能也比较明朗：  scrapy engine 作为调度引擎起到协同4个模块，每个模块之间的交互都经过scrapy engine； scheduler 是调度器的意思，负责处理需要爬取页面的队列调度； downloader 负责从scheduler获取到需要爬取页面">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://howgtd.com/2019/02/01/python-spider/scrapy.jpeg">
+<meta property="og:updated_time" content="2019-02-05T14:22:52.111Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HowGTD">
-<meta name="twitter:description" content="怎么更高效的把事情做好">
+<meta name="twitter:title" content="python_spider">
+<meta name="twitter:description" content="##关于scrapy 一个很成熟的爬虫框架，了解到的时候感觉很不错，学习数据抓取可以直接从这里开始学习；  结构非常清晰，模块的实现的功能也比较明朗：  scrapy engine 作为调度引擎起到协同4个模块，每个模块之间的交互都经过scrapy engine； scheduler 是调度器的意思，负责处理需要爬取页面的队列调度； downloader 负责从scheduler获取到需要爬取页面">
+<meta name="twitter:image" content="http://howgtd.com/2019/02/01/python-spider/scrapy.jpeg">
 
 
 
@@ -119,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://howgtd.com/">
+  <link rel="canonical" href="http://howgtd.com/2019/02/01/python-spider/">
 
 
 
 
 
-  <title>HowGTD</title>
+  <title>python_spider | HowGTD</title>
   
 
 
@@ -144,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -228,9 +230,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -260,9 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/01/python-spider/" itemprop="url">python_spider</a></h1>
+          <h1 class="post-title" itemprop="name headline">python_spider</h1>
         
 
         <div class="post-meta">
@@ -312,9 +312,7 @@
       
 
       
-        
-          
-            <p>##关于scrapy</p>
+        <p>##关于scrapy</p>
 <p>一个很成熟的爬虫框架，了解到的时候感觉很不错，学习数据抓取可以直接从这里开始学习；</p>
 <img src="/2019/02/01/python-spider/scrapy.jpeg" title="scrapy">
 <p>结构非常清晰，模块的实现的功能也比较明朗：</p>
@@ -341,8 +339,6 @@
 <h3 id="5、建立main-py来执行爬虫程序"><a href="#5、建立main-py来执行爬虫程序" class="headerlink" title="5、建立main.py来执行爬虫程序"></a>5、建立main.py来执行爬虫程序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy <span class="keyword">import</span> cmdline</span><br><span class="line">cmdline.execute(<span class="string">'scrapy crawl douban_spider'</span>.split())</span><br></pre></td></tr></table></figure>
 <p>这样一个基于scrapy的小爬虫就搞定了；</p>
 
-          
-        
       
     </div>
     
@@ -357,135 +353,38 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://howgtd.com/2019/01/31/why-learn-py/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="靑枫">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="HowGTD">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/why-learn-py/" itemprop="url">初见-立个Flag</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-31T22:35:22+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/python/" rel="tag"># python</a>
           
-            
+            <a href="/tags/scrapy/" rel="tag"># scrapy</a>
           
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="初见"><a href="#初见" class="headerlink" title="初见"></a>初见</h2><p>刚刚弄好博客，用的hexo+github弄的，主要希望通过对更贴近代码的方式，来更好地立即产品以及产品内部逻辑。另外目前数据挖掘与分析越来越重要，作为一个互联网产品经理，对数据的理解也不应该停留在简单对汇总数据的分析，还需要尝试掌握一些更深度的数据挖掘，找到更细颗粒度的数据间联系，获取对业务的更深刻理解。</p>
-<h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><p>我初步捋了一下，python有比较成熟的架包，在数据爬取、数据清洗、数据分析上都比较不错，而且初步看了一下python的语法，还是比较好理解；趁这次假期，立个flag：构建爬虫，并能够学会几个比较成熟的数据分析包；</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/31/why-learn-py/" rel="next" title="初见-立个Flag">
+                <i class="fa fa-chevron-left"></i> 初见-立个Flag
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
       
     </footer>
   </div>
@@ -495,10 +394,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -506,6 +406,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -526,8 +430,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -578,6 +491,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境安装与源码"><span class="nav-number">1.</span> <span class="nav-text">环境安装与源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启爬虫之旅"><span class="nav-number">2.</span> <span class="nav-text">开启爬虫之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、爬取目标分析"><span class="nav-number">2.1.</span> <span class="nav-text">1、爬取目标分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、items-py建立爬取目标"><span class="nav-number">2.2.</span> <span class="nav-text">2、items.py建立爬取目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、通过xpath提取字段"><span class="nav-number">2.3.</span> <span class="nav-text">3、通过xpath提取字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、pipeline存储数据"><span class="nav-number">2.4.</span> <span class="nav-text">4、pipeline存储数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、建立main-py来执行爬虫程序"><span class="nav-number">2.5.</span> <span class="nav-text">5、建立main.py来执行爬虫程序</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -718,6 +647,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
