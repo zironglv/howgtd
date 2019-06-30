@@ -751,6 +751,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://howgtd.com/2019/02/01/python-spider-1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="QF">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HowGTD">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/01/python-spider-1/" itemprop="url">Scrapy构建爬虫</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-01T15:29:28+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="关于scrapy"><a href="#关于scrapy" class="headerlink" title="关于scrapy"></a>关于scrapy</h2><p>一个很成熟的爬虫框架，了解到的时候感觉很不错，学习数据抓取可以直接从这里开始学习；</p>
+
+<p>结构非常清晰，模块的实现的功能也比较明朗：</p>
+<ul>
+<li>scrapy engine 作为调度引擎起到协同4个模块，每个模块之间的交互都经过scrapy engine；</li>
+<li>scheduler 是调度器的意思，负责处理需要爬取页面的队列调度；</li>
+<li>downloader 负责从scheduler获取到需要爬取页面地址，并进行爬取；</li>
+<li>spiders 负责定义数据需求，即需要那些数据，从downloader获取到页面的结果并对这类数据进行提取；同时起到探索的能力，发现有需要进一步爬取的页面url时，会将地址库返回给scheduler，等待排期后给到downloader；</li>
+<li>item pipeline 是管道的意思，负责处理从spider获取到的数据进行对外输出存储；</li>
+</ul>
+<h2 id="环境安装与源码"><a href="#环境安装与源码" class="headerlink" title="环境安装与源码"></a>环境安装与源码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">环境：MAC</span><br><span class="line">使用IDE: pycharm <span class="number">2018</span></span><br><span class="line">python：<span class="number">2.7</span></span><br><span class="line">mysql：<span class="number">8.0</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>源码已经上传GitHub，如果环境类似，可以直接通过clone该仓库，里面涉及些包的引用和安装，新手比较荣容易跨过去；<a href="https://github.com/zironglv/python-scrapy-dome" target="_blank" rel="noopener">https://github.com/zironglv/python-scrapy-dome</a></p>
+</blockquote>
+<h2 id="开启爬虫之旅"><a href="#开启爬虫之旅" class="headerlink" title="开启爬虫之旅"></a>开启爬虫之旅</h2><h3 id="1、爬取目标分析"><a href="#1、爬取目标分析" class="headerlink" title="1、爬取目标分析"></a>1、爬取目标分析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">选取的目标是：https://movie.douban.com/top250</span><br><span class="line">尝试将250个电影排名的相关介绍爬取下来；</span><br></pre></td></tr></table></figure>
+<h3 id="2、items-py建立爬取目标"><a href="#2、items-py建立爬取目标" class="headerlink" title="2、items.py建立爬取目标"></a>2、items.py建立爬取目标</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define here the models for your scraped items</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># See documentation in:</span></span><br><span class="line"><span class="comment"># https://doc.scrapy.org/en/latest/topics/items.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanspiderItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># name = scrapy.Field()</span></span><br><span class="line">    <span class="comment"># 排序、名称、介绍、评星、评价</span></span><br><span class="line">    movie_num = scrapy.Field()</span><br><span class="line">    movie_name = scrapy.Field()</span><br><span class="line">    movie_introduce = scrapy.Field()</span><br><span class="line">    movie_star = scrapy.Field()</span><br><span class="line">    movie_eval = scrapy.Field()</span><br></pre></td></tr></table></figure>
+<p>我们可以按照这个类定义的样式，将需要获取的字段变量配置好便可；</p>
+<blockquote>
+<p>使用chrome，可以安装xpath helper小工具，方便写xpath定位内容</p>
+</blockquote>
+<h3 id="3、通过xpath提取字段"><a href="#3、通过xpath提取字段" class="headerlink" title="3、通过xpath提取字段"></a>3、通过xpath提取字段</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> doubanspider.items <span class="keyword">import</span> DoubanspiderItem   <span class="comment">#引入开头配置items类</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanSpiderSpider</span><span class="params">(scrapy.Spider)</span>:</span>           </span><br><span class="line">    name = <span class="string">'douban_spider'</span></span><br><span class="line">    allowed_domains = [<span class="string">'movie.douban.com'</span>]</span><br><span class="line">    start_urls = [<span class="string">'https://movie.douban.com/top250'</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span>     <span class="comment">#根据网页字段采用xpath进行字段提取</span></span><br><span class="line">        movie_list = response.xpath(<span class="string">"//ol[@class='grid_view']/li"</span>)</span><br><span class="line">        <span class="keyword">for</span> i_item <span class="keyword">in</span> movie_list:</span><br><span class="line">            douban_item = DoubanspiderItem()</span><br><span class="line">            douban_item[<span class="string">'movie_num'</span>] = i_item.xpath(<span class="string">".//div[@class='item']//em/text()"</span>).extract_first()</span><br><span class="line">            douban_item[<span class="string">'movie_name'</span>] = i_item.xpath(<span class="string">".//div[@class='hd']/a/span[1]/text()"</span>).extract_first()</span><br><span class="line">            content_list = i_item.xpath(<span class="string">".//div[@class='info']/div[@class='bd']/p/text()"</span>).extract()</span><br><span class="line">            <span class="keyword">for</span> content_i <span class="keyword">in</span> content_list :</span><br><span class="line">                content_s = <span class="string">""</span>.join(content_i.split())</span><br><span class="line">                douban_item[<span class="string">'movie_introduce'</span>] = content_s</span><br><span class="line">            douban_item[<span class="string">'movie_star'</span>] = i_item.xpath(<span class="string">".//div[@class='item']//span[@class='rating_num']/text()"</span>).extract_first()</span><br><span class="line">            douban_item[<span class="string">'movie_eval'</span>] = i_item.xpath(<span class="string">".//div[@class='item']//div[@class='star']/span[4]/text()"</span>).extract_first()</span><br><span class="line">            <span class="keyword">yield</span> douban_item    <span class="comment">#将派去内容通过yield提交给items.pipeline</span></span><br><span class="line">        next_link = response.xpath(<span class="string">"//span[@class='next']/link/@href"</span>).extract()</span><br><span class="line">        <span class="keyword">if</span> next_link :</span><br><span class="line">            next_link = next_link[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(<span class="string">"https://movie.douban.com/top250"</span>+next_link,callback=self.parse)</span><br></pre></td></tr></table></figure>
+<h3 id="4、pipeline存储数据"><a href="#4、pipeline存储数据" class="headerlink" title="4、pipeline存储数据"></a>4、pipeline存储数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define your item pipelines here</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Don't forget to add your pipeline to the ITEM_PIPELINES setting</span></span><br><span class="line"><span class="comment"># See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mysql.connector</span><br><span class="line"><span class="keyword">from</span> mysql.connector <span class="keyword">import</span> errorcode</span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> mysqlconfig</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DoubanspiderPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line"></span><br><span class="line">        cnx = cur = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cnx = mysql.connector.connect(**mysqlconfig)</span><br><span class="line">        <span class="keyword">except</span> mysql.connector.Error <span class="keyword">as</span> err:</span><br><span class="line">            <span class="keyword">if</span> err.errno == errorcode.ER_ACCESS_DENIED_ERROR:</span><br><span class="line">                print(<span class="string">'Something is wrong with your user name or password'</span>)</span><br><span class="line">            <span class="keyword">elif</span> err.errno == errorcode.ER_BAD_DB_ERROR:</span><br><span class="line">                print(<span class="string">"Database does not exist"</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                print(err)</span><br><span class="line">       <span class="comment"># item = dict(item)</span></span><br><span class="line">        sql = <span class="string">"insert into python_spider (movie_num,movie_name,movie_introduce,movie_star,movie_eval) values ('%s','%s','%s','%s','%s')"</span> %(item[<span class="string">'movie_num'</span>],item[<span class="string">'movie_name'</span>],item[<span class="string">'movie_introduce'</span>],item[<span class="string">'movie_star'</span>],item[<span class="string">'movie_eval'</span>])</span><br><span class="line">        cur = cnx.cursor()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cur.execute(sql)</span><br><span class="line">            cnx.commit()</span><br><span class="line">            print(<span class="string">'insert into success'</span>)</span><br><span class="line">        <span class="keyword">except</span>  mysql.connector.Error <span class="keyword">as</span> err:</span><br><span class="line">            print(<span class="string">'insert into error'</span>)</span><br><span class="line">            <span class="keyword">print</span> item[<span class="string">'movie_num'</span>],item[<span class="string">'movie_name'</span>],item[<span class="string">'movie_introduce'</span>],item[<span class="string">'movie_star'</span>],item[<span class="string">'movie_eval'</span>]</span><br><span class="line">            <span class="keyword">print</span> err</span><br><span class="line">        cur.close()</span><br><span class="line">        cnx.close()</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
+<p>通过引入mysql.connector，来建立mysql的链接，将数据写入到mysql；存储到mysql的过程比较复杂，我后面单独一篇来写；</p>
+<h3 id="5、建立main-py来执行爬虫程序"><a href="#5、建立main-py来执行爬虫程序" class="headerlink" title="5、建立main.py来执行爬虫程序"></a>5、建立main.py来执行爬虫程序</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy <span class="keyword">import</span> cmdline</span><br><span class="line">cmdline.execute(<span class="string">'scrapy crawl douban_spider'</span>.split())</span><br></pre></td></tr></table></figure>
+<p>这样一个基于scrapy的小爬虫就搞定了；</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://howgtd.com/2019/01/31/why-learn-py/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -905,7 +1049,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -918,7 +1062,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
